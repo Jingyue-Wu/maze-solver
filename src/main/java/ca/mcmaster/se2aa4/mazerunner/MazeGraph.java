@@ -4,17 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MazeGraph {
-    private List<List<String>> AdjacencyMatrix = new ArrayList<List<String>>();
+    private List<List<Boolean>> AdjacencyMatrix = new ArrayList<List<Boolean>>();
 
-    public void convertToMatrix(Maze maze){
+    MazeGraph(Maze maze) {
+        AdjacencyMatrix = convertToMatrix(maze);
+    }
+
+    private List<List<Boolean>> convertToMatrix(Maze maze) {
+        return maze.getMazeList();
+    }
+
+    public void getNext(int row, int column) {
 
     }
 
-    public void getNext(int row, int column){
-
-    }
-
-    public void checkExit(int row, int column){
+    public void checkExit(int row, int column) {
 
     }
 }
