@@ -44,7 +44,7 @@ public class Main {
      * Solve provided maze with specified method.
      *
      * @param method Method to solve maze with
-     * @param maze Maze to solve
+     * @param maze   Maze to solve
      * @return Maze solution path
      * @throws Exception If provided method does not exist
      */
@@ -58,6 +58,10 @@ public class Main {
             case "tremaux" -> {
                 logger.debug("Tremaux algorithm chosen.");
                 solver = new TremauxSolver();
+            }
+            case "bfs" -> {
+                logger.debug("Breadth First Search algorithm chosen.");
+                solver = new BreadthFirstSearchSolver();
             }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");
