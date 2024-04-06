@@ -8,6 +8,11 @@ import java.util.Queue;
 
 public class BreadthFirstSearchSolver implements MazeSolver {
 
+    @Override
+    public Path accept(Visitor v) {
+        return v.visit(this);
+    }
+
     // private MazeGraph graph;
     private Maze maze;
     private Position currentPosition;
@@ -20,18 +25,25 @@ public class BreadthFirstSearchSolver implements MazeSolver {
 
     @Override
     public Path solve(Maze maze) {
+        Path path = new Path();
         this.maze = maze;
         currentPosition = maze.getStart();
+        Direction dir = Direction.RIGHT;
         queue.add(currentPosition);
+
+        // Initialized list of marked nodes
         initializeMarked();
 
+        // Loop unless priority queue is empty
         while (!queue.isEmpty()) {
             currentPosition = queue.remove();
-            int currentX = currentPosition.getX();
-            int currentY = currentPosition.getY();
-
             int limitX = maze.getSizeX();
             int limitY = maze.getSizeY();
+
+            // Check if end is reached
+            if (currentPosition.getX() == maze.getSizeX() - 1) {
+                path = getPath();
+            }
 
             for (int i = 0; i < directionCheck.size(); i++) {
                 Position checkPosition = currentPosition.move(directionCheck.get(i));
@@ -44,13 +56,17 @@ public class BreadthFirstSearchSolver implements MazeSolver {
                     // checks 4 sides and its not a wall and has not been visited yet, then add node
                     // to priority queue
                     // creating an implicit graph representation adjacency list
-                    if (!maze.isWall(checkPosition) && marked.get(currentX).get(currentY) == false) {
+                    if (!maze.isWall(checkPosition) && !marked.get(checkX).get(checkY)) {
                         queue.add(checkPosition);
-                        marked.get(currentX).set(currentY, true);
+                        marked.get(checkX).set(checkY, true);
                     }
                 }
             }
         }
+        return path;
+    }
+
+    private Path getPath() {
 
         // Path result = getPath();
 
@@ -68,18 +84,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
             for (int j = 0; j < maze.getSizeY(); j++) {
                 row.add(false);
             }
-
             marked.add(row);
         }
-    }
-
-    private Path getPath() {
-
-        return null;
-    }
-
-    @Override
-    public Path accept(Visitor v) {
-        return v.visit(this);
     }
 }

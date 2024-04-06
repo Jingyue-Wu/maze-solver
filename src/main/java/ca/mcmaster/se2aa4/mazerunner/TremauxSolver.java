@@ -8,6 +8,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class TremauxSolver implements MazeSolver {
+
+    @Override
+    public Path accept(Visitor v) {
+        return v.visit(this);
+    }
+
     private static final Logger logger = LogManager.getLogger();
     private int[][] marks;
     private Maze maze;
@@ -188,10 +194,5 @@ public class TremauxSolver implements MazeSolver {
      */
     private boolean isInBounds(Position position, int sizeX, int sizeY) {
         return position.x() >= 0 && position.x() < sizeX && position.y() >= 0 && position.y() < sizeY;
-    }
-
-    @Override
-    public Path accept(Visitor v) {
-        return v.visit(this);
     }
 }
