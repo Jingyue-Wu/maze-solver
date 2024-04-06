@@ -103,16 +103,20 @@ public class TremauxSolver implements MazeSolver {
         List<Position> neighbors = new ArrayList<>();
 
         Position left = pos.add(new Position(-1, 0));
-        if (left.x() >= 0 && !maze.isWall(left)) neighbors.add(left);
+        if (left.x() >= 0 && !maze.isWall(left))
+            neighbors.add(left);
 
         Position right = pos.add(new Position(1, 0));
-        if (right.x() < maze.getSizeX() && !maze.isWall(right)) neighbors.add(right);
+        if (right.x() < maze.getSizeX() && !maze.isWall(right))
+            neighbors.add(right);
 
         Position up = pos.add(new Position(0, -1));
-        if (up.y() >= 0 && !maze.isWall(up)) neighbors.add(up);
+        if (up.y() >= 0 && !maze.isWall(up))
+            neighbors.add(up);
 
         Position down = pos.add(new Position(0, 1));
-        if (down.y() < maze.getSizeY() && !maze.isWall(down)) neighbors.add(down);
+        if (down.y() < maze.getSizeY() && !maze.isWall(down))
+            neighbors.add(down);
 
         return neighbors;
     }
@@ -132,31 +136,37 @@ public class TremauxSolver implements MazeSolver {
             Position rightPos = pos.move(dir.turnRight());
             Position leftPos = pos.move(dir.turnLeft());
             Position forwardPos = pos.move(dir);
-            if (isInBounds(rightPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(rightPos) && marks[rightPos.y()][rightPos.x()] == 1) {
+            if (isInBounds(rightPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(rightPos)
+                    && marks[rightPos.y()][rightPos.x()] == 1) {
                 path.addStep('R');
                 path.addStep('F');
                 dir = dir.turnRight();
                 pos = rightPos;
-            } else if (isInBounds(leftPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(leftPos) && marks[leftPos.y()][leftPos.x()] == 1) {
+            } else if (isInBounds(leftPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(leftPos)
+                    && marks[leftPos.y()][leftPos.x()] == 1) {
                 path.addStep('L');
                 path.addStep('F');
                 dir = dir.turnLeft();
                 pos = leftPos;
-            } else if (isInBounds(forwardPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(forwardPos) && marks[forwardPos.y()][forwardPos.x()] == 1) {
+            } else if (isInBounds(forwardPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(forwardPos)
+                    && marks[forwardPos.y()][forwardPos.x()] == 1) {
                 path.addStep('F');
                 pos = forwardPos;
             } else {
-                if (isInBounds(rightPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(rightPos) && marks[rightPos.y()][rightPos.x()] == 0) {
+                if (isInBounds(rightPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(rightPos)
+                        && marks[rightPos.y()][rightPos.x()] == 0) {
                     path.addStep('R');
                     path.addStep('F');
                     dir = dir.turnRight();
                     pos = rightPos;
-                } else if (isInBounds(leftPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(leftPos) && marks[leftPos.y()][leftPos.x()] == 0) {
+                } else if (isInBounds(leftPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(leftPos)
+                        && marks[leftPos.y()][leftPos.x()] == 0) {
                     path.addStep('L');
                     path.addStep('F');
                     dir = dir.turnLeft();
                     pos = leftPos;
-                } else if (isInBounds(forwardPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(forwardPos) && marks[forwardPos.y()][forwardPos.x()] == 0) {
+                } else if (isInBounds(forwardPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(forwardPos)
+                        && marks[forwardPos.y()][forwardPos.x()] == 0) {
                     path.addStep('F');
                     pos = forwardPos;
                 } else {
@@ -164,7 +174,6 @@ public class TremauxSolver implements MazeSolver {
                 }
             }
         }
-
 
         return path;
     }
@@ -179,5 +188,10 @@ public class TremauxSolver implements MazeSolver {
      */
     private boolean isInBounds(Position position, int sizeX, int sizeY) {
         return position.x() >= 0 && position.x() < sizeX && position.y() >= 0 && position.y() < sizeY;
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);
     }
 }

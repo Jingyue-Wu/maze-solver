@@ -8,4 +8,6 @@ public interface MazeSolver {
      * @return Path that solves the provided maze
      */
     Path solve(Maze maze);
+
+    public abstract void accept(Visitor v);
 }
