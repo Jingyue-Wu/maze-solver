@@ -9,7 +9,6 @@ public class SolverVisitor implements Visitor {
 
     @Override
     public Path visit(RightHandSolver rh) {
-        // Implement logic to get the path for RightHandSolver
         return rh.solve(maze);
     }
 
