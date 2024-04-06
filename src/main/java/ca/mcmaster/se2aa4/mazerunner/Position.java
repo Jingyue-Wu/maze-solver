@@ -45,6 +45,6 @@ public record Position(int x, int y) {
     }
 
     public int getY() {
-        return x;
+        return y;
     }
 }

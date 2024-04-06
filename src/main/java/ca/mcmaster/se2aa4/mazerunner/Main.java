@@ -1,12 +1,18 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
+
+    private static Visitor solverVisitor;
 
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
@@ -17,6 +23,8 @@ public class Main {
             cmd = parser.parse(getParserOptions(), args);
             String filePath = cmd.getOptionValue('i');
             Maze maze = new Maze(filePath);
+
+            solverVisitor = new SolverVisitor(maze);
 
             if (cmd.getOptionValue("p") != null) {
                 logger.info("Validating path");
@@ -50,6 +58,9 @@ public class Main {
      */
     private static Path solveMaze(String method, Maze maze) throws Exception {
         MazeSolver solver = null;
+
+        Path result = null;
+
         switch (method) {
             case "righthand" -> {
                 logger.debug("RightHand algorithm chosen.");
@@ -60,8 +71,8 @@ public class Main {
                 solver = new TremauxSolver();
             }
             case "bfs" -> {
-                logger.debug("Breadth First Search algorithm chosen.");
-                solver = new BreadthFirstSearchSolver();
+            logger.debug("Breadth First Search algorithm chosen.");
+            solver = new BreadthFirstSearchSolver();
             }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");
@@ -69,7 +80,10 @@ public class Main {
         }
 
         logger.info("Computing path");
-        return solver.solve(maze);
+        // return solver.solve(maze);
+
+        result = solver.accept(solverVisitor);
+        return result;
     }
 
     /**

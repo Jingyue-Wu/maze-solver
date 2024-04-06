@@ -42,4 +42,9 @@ public class RightHandSolver implements MazeSolver {
 
         return path;
     }
+
+    @Override
+    public Path accept(Visitor v) {
+        return v.visit(this);
+    }
 }
