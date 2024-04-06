@@ -80,7 +80,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
                         case LEFT -> {
                             finalPath.addStep('L');
                             finalPath.addStep('F');
-                            dir = dir = dir.turnLeft();
+                            dir = dir.turnLeft();
 
                         }
                         case RIGHT -> {
