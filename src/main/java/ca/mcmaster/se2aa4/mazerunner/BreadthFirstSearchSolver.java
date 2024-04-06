@@ -23,12 +23,13 @@ public class BreadthFirstSearchSolver implements MazeSolver {
         this.maze = maze;
         currentPosition = maze.getStart();
         queue.add(currentPosition);
+
+        // Initialized list of marked nodes
         initializeMarked();
 
+        // Loop unless priority queue is empty
         while (!queue.isEmpty()) {
             currentPosition = queue.remove();
-            int currentX = currentPosition.getX();
-            int currentY = currentPosition.getY();
 
             int limitX = maze.getSizeX();
             int limitY = maze.getSizeY();
@@ -44,12 +45,16 @@ public class BreadthFirstSearchSolver implements MazeSolver {
                     // checks 4 sides and its not a wall and has not been visited yet, then add node
                     // to priority queue
                     // creating an implicit graph representation adjacency list
-                    if (!maze.isWall(checkPosition) && marked.get(currentX).get(currentY) == false) {
+                    if (!maze.isWall(checkPosition) && !marked.get(checkX).get(checkY)) {
                         queue.add(checkPosition);
-                        marked.get(currentX).set(currentY, true);
+                        marked.get(checkX).set(checkY, true);
                     }
                 }
             }
+            System.out.println(queue);
+            System.out.println(marked);
+            System.out.println(", ");
+
         }
 
         // Path result = getPath();
