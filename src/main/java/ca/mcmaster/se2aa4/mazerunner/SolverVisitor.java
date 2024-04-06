@@ -1,9 +1,9 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-public class PathVisitor implements Visitor {
+public class SolverVisitor implements Visitor {
     Maze maze;
 
-    public PathVisitor(Maze maze) {
+    public SolverVisitor(Maze maze) {
         this.maze = maze;
     }
 

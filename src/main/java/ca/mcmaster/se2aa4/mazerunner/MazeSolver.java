@@ -9,5 +9,5 @@ public interface MazeSolver {
      */
     Path solve(Maze maze);
 
-    public abstract void accept(Visitor v);
+    public Path accept(Visitor v);
 }
