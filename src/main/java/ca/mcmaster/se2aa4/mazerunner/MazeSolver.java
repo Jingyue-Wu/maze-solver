@@ -1,6 +1,9 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 public interface MazeSolver {
+
+    public Path accept(Visitor v);
+
     /**
      * Solve maze and return path through maze.
      *
@@ -8,6 +11,4 @@ public interface MazeSolver {
      * @return Path that solves the provided maze
      */
     Path solve(Maze maze);
-
-    public Path accept(Visitor v);
 }
