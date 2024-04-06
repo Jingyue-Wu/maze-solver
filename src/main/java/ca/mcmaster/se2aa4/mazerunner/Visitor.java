@@ -5,5 +5,5 @@ public interface Visitor {
 
     public Path visit(TremauxSolver solver);
 
-    // public Path visit(BreadthFirstSearchSolver solver);
+    public Path visit(BreadthFirstSearchSolver solver);
 }

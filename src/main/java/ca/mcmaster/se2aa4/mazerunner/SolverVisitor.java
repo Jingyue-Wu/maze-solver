@@ -18,9 +18,8 @@ public class SolverVisitor implements Visitor {
         return t.solve(maze);
     }
 
-    // @Override
-    // public void visit(BFS bfs){
-    // return bfs.getPath();
-    // }
-
+    @Override
+    public Path visit(BreadthFirstSearchSolver bfs) {
+        return bfs.solve(maze);
+    }
 }
