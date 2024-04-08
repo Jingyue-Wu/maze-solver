@@ -46,6 +46,7 @@ public class Main {
                     Path baselinePath = solveMaze(baselineMethod, maze);
 
                     float speedup = calculateSpeedup(baselinePath, path);
+                    System.out.printf("Time to load maze from file: %.2f milliseconds\n", maze.getLoadTime());
                     System.out.printf("Speedup: %.2f \n", speedup);
                 }
 
