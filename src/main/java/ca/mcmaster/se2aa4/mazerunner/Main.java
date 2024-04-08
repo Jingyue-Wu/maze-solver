@@ -34,11 +34,27 @@ public class Main {
                 } else {
                     System.out.println("incorrect path");
                 }
-            } else {
+            }
+
+            else if (cmd.getOptionValue("method") != null) {
+
                 String method = cmd.getOptionValue("method", "righthand");
                 Path path = solveMaze(method, maze);
-                System.out.println(path.getFactorizedForm());
+
+                if (cmd.getOptionValue("baseline") != null) {
+                    String baselineMethod = cmd.getOptionValue("baseline");
+                    Path baselinePath = solveMaze(baselineMethod, maze);
+
+                    float speedup = calculateSpeedup(baselinePath, path);
+                    System.out.printf("Time to load maze from file: %.2f milliseconds\n", maze.getLoadTime());
+                    System.out.printf("Speedup: %.2f \n", speedup);
+                }
+
+                else {
+                    System.out.println(path.getFactorizedForm());
+                }
             }
+
         } catch (Exception e) {
             System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
             logger.error("MazeSolver failed.  Reason: " + e.getMessage());
@@ -46,6 +62,14 @@ public class Main {
         }
 
         logger.info("End of MazeRunner");
+    }
+
+    private static float calculateSpeedup(Path baseline, Path method) {
+        String baseLineString = baseline.getCanonicalForm();
+        String methodString = method.getCanonicalForm();
+
+        float speedup = (float) baseLineString.length() / methodString.length();
+        return speedup;
     }
 
     /**
@@ -71,8 +95,8 @@ public class Main {
                 solver = new TremauxSolver();
             }
             case "bfs" -> {
-            logger.debug("Breadth First Search algorithm chosen.");
-            solver = new BreadthFirstSearchSolver();
+                logger.debug("Breadth First Search algorithm chosen.");
+                solver = new BreadthFirstSearchSolver();
             }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");
@@ -80,7 +104,6 @@ public class Main {
         }
 
         logger.info("Computing path");
-        // return solver.solve(maze);
 
         result = solver.accept(solverVisitor);
         return result;
@@ -100,6 +123,7 @@ public class Main {
 
         options.addOption(new Option("p", true, "Path to be verified in maze"));
         options.addOption(new Option("method", true, "Specify which path computation algorithm will be used"));
+        options.addOption(new Option("baseline", true, "Specify the baseline method used  for benchmarking"));
 
         return options;
     }
