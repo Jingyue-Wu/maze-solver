@@ -38,7 +38,7 @@ class BenchmarkerTest {
         try {
             benchmark.updateselectedTime();
         } catch (Exception e) {
-            String expected = "Selected explore time has already been recorded";
+            String expected = "Selected method explore time has already been recorded";
             assertEquals(expected, e.getMessage());
         }
     }

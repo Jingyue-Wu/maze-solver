@@ -7,8 +7,8 @@ public class RightHandSolver implements MazeSolver {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public Path accept(Visitor v) {
-        return v.visit(this);
+    public Path accept(Visitor visitor) {
+        return visitor.visit(this);
     }
 
     @Override
