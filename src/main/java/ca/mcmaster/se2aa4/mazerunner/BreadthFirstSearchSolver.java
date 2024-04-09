@@ -9,21 +9,15 @@ import java.util.Queue;
 public class BreadthFirstSearchSolver implements MazeSolver {
 
     @Override
-    public Path accept(Visitor v) {
-        return v.visit(this);
+    public Path accept(Visitor visitor) {
+        return visitor.visit(this);
     }
 
     private Maze maze;
     private Position currentPosition;
-
-    // Priority queue
     Queue<Position> queue = new LinkedList<>();
-
-    // Queue for storing current longest path discovered for the path instruction
     Queue<ArrayList<Position>> checkedPaths = new LinkedList<>();
-
     private List<List<Boolean>> marked;
-
     private List<Direction> directionCheck = Arrays.asList(Direction.UP, Direction.DOWN, Direction.LEFT,
             Direction.RIGHT);
 
@@ -31,15 +25,14 @@ public class BreadthFirstSearchSolver implements MazeSolver {
     public Path solve(Maze maze) {
         Path path = new Path();
         this.maze = maze;
+        
         currentPosition = maze.getStart();
         queue.add(currentPosition);
 
-        // Initialize starting node in path
         ArrayList<Position> start = new ArrayList<>();
         start.add(currentPosition);
         checkedPaths.add(start);
 
-        // Initialized list of marked nodes
         initializeMarked();
 
         while (!queue.isEmpty()) {
@@ -61,6 +54,61 @@ public class BreadthFirstSearchSolver implements MazeSolver {
         return path;
     }
 
+    /**
+     * Updates the priority queue and queue of possible paths.
+     *
+     * @param checkPosition Position of current node in the graph
+     * @param currentPath   Position of the previously checked node
+     * @return void
+     */
+    private void updatePaths(Position checkPosition, ArrayList<Position> currentPath) {
+        int limitX = maze.getSizeX();
+        int limitY = maze.getSizeY();
+        int checkX = checkPosition.getX();
+        int checkY = checkPosition.getY();
+
+        if (checkX < limitX && checkY < limitY && checkX > 0 && checkY > 0) {
+
+            /**
+             * Checks 4 adjecent nodes.
+             * If it's not a wall and has not been visited yet, then add the node
+             * to priority queue creating an implicit adjacency list graph representation.
+             * Each adjacency list entry is only computed if needed, improving efficency.
+             */
+
+            if (!maze.isWall(checkPosition) && !marked.get(checkX).get(checkY)) {
+                queue.add(checkPosition);
+                marked.get(checkX).set(checkY, true);
+
+                // Update path queue
+                ArrayList<Position> newPosition = new ArrayList<>(currentPath);
+                newPosition.add(checkPosition);
+                checkedPaths.add(newPosition);
+            }
+        }
+    }
+
+    /**
+     * Creates a matrix that tracks the nodes that have been visited.
+     */
+    private void initializeMarked() {
+        marked = new LinkedList<List<Boolean>>();
+        for (int i = 0; i < maze.getSizeX(); i++) {
+            List<Boolean> row = new ArrayList<Boolean>();
+
+            for (int j = 0; j < maze.getSizeY(); j++) {
+                row.add(false);
+            }
+            marked.add(row);
+        }
+    }
+
+    /**
+     * Get the shortest path to exit the maze based on the order of nodes travelled.
+     *
+     * @param minimumNodes List of minimal node positions in traversal order
+     * @return Shortest Path
+     */
     private Path getPath(ArrayList<Position> minimumNodes) {
         Path finalPath = new Path();
         Direction dir = Direction.RIGHT;
@@ -148,6 +196,13 @@ public class BreadthFirstSearchSolver implements MazeSolver {
         return finalPath;
     }
 
+    /**
+     * Gets the new travel direction based on the change in nodes.
+     *
+     * @param current  Position of current node in the graph
+     * @param previous Position of the previously checked node
+     * @return New Direction
+     */
     private Direction getNewDirection(Position current, Position previous) {
         // Find absolute direction (Relative to x, y coordinates)
         int currentX = current.getX();
@@ -172,40 +227,5 @@ public class BreadthFirstSearchSolver implements MazeSolver {
         }
 
         throw new IllegalStateException("New position must be different from existing position: " + this);
-    }
-
-    private void updatePaths(Position checkPosition, ArrayList<Position> currentPath) {
-        int limitX = maze.getSizeX();
-        int limitY = maze.getSizeY();
-        int checkX = checkPosition.getX();
-        int checkY = checkPosition.getY();
-
-        if (checkX < limitX && checkY < limitY && checkX > 0 && checkY > 0) {
-
-            // checks 4 sides and its not a wall and has not been visited yet, then add node
-            // to priority queue
-            // creating an implicit graph representation adjacency list
-            if (!maze.isWall(checkPosition) && !marked.get(checkX).get(checkY)) {
-                queue.add(checkPosition);
-                marked.get(checkX).set(checkY, true);
-
-                // Update path queue
-                ArrayList<Position> newPosition = new ArrayList<>(currentPath);
-                newPosition.add(checkPosition);
-                checkedPaths.add(newPosition);
-            }
-        }
-    }
-
-    private void initializeMarked() {
-        marked = new LinkedList<List<Boolean>>();
-        for (int i = 0; i < maze.getSizeX(); i++) {
-            List<Boolean> row = new ArrayList<Boolean>();
-
-            for (int j = 0; j < maze.getSizeY(); j++) {
-                row.add(false);
-            }
-            marked.add(row);
-        }
     }
 }

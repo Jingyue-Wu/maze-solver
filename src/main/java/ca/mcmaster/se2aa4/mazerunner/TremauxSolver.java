@@ -10,8 +10,8 @@ import java.util.List;
 public class TremauxSolver implements MazeSolver {
 
     @Override
-    public Path accept(Visitor v) {
-        return v.visit(this);
+    public Path accept(Visitor visitor) {
+        return visitor.visit(this);
     }
 
     private static final Logger logger = LogManager.getLogger();
