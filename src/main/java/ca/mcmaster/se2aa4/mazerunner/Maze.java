@@ -27,6 +27,8 @@ public class Maze {
     public Maze(String filePath) throws Exception {
         logger.debug("Reading the maze from file " + filePath);
 
+        System.out.print(filePath);
+
 
         loadTime = System.currentTimeMillis();
 
