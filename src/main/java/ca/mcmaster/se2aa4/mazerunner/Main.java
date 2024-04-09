@@ -73,7 +73,7 @@ public class Main {
     }
 
     /**
-     * Solve provided maze with specified method.
+     * Solve provided maze with specified method by creating a solver visitor.
      *
      * @param method Method to solve maze with
      * @param maze   Maze to solve
