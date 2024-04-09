@@ -16,8 +16,6 @@ public class Maze {
     private final Position start;
     private final Position end;
 
-    private float loadTime;
-
     /**
      * Initialize a Maze from a file path.
      *
@@ -28,9 +26,6 @@ public class Maze {
         logger.debug("Reading the maze from file " + filePath);
 
         System.out.print(filePath);
-
-
-        loadTime = System.currentTimeMillis();
 
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
@@ -45,18 +40,11 @@ public class Maze {
             }
             maze.add(newLine);
         }
-        
         reader.close();
-
-        loadTime =  System.currentTimeMillis() - loadTime;
-
         start = findStart();
         end = findEnd();
     }
 
-    public float getLoadTime() {
-        return loadTime;
-    }
 
     /**
      * Find start position of the maze.

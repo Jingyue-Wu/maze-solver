@@ -57,7 +57,6 @@ public class BreadthFirstSearchSolver implements MazeSolver {
                 path = getPath(currentPath); // Generate path
                 return path;
             }
-
         }
         return path;
     }
@@ -81,21 +80,19 @@ public class BreadthFirstSearchSolver implements MazeSolver {
                             finalPath.addStep('L');
                             finalPath.addStep('F');
                             dir = dir.turnLeft();
-
                         }
                         case RIGHT -> {
                             finalPath.addStep('R');
                             finalPath.addStep('F');
                             dir = dir.turnRight();
                         }
-                        default -> throw new IllegalStateException("Can not turn around in one spot: " + this);
+                        default -> throw new IllegalStateException("Can not turn around in one spot");
                     }
                 }
                 case DOWN -> {
                     switch (newDir) {
                         case DOWN -> {
                             finalPath.addStep('F');
-
                         }
                         case LEFT -> {
                             finalPath.addStep('R');
@@ -107,7 +104,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
                             finalPath.addStep('F');
                             dir = dir.turnLeft();
                         }
-                        default -> throw new IllegalStateException("Can not turn around in one spot: " + this);
+                        default -> throw new IllegalStateException("Can not turn around in one spot");
                     }
                 }
                 case LEFT -> {
@@ -125,7 +122,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
                         case LEFT -> {
                             finalPath.addStep('F');
                         }
-                        default -> throw new IllegalStateException("Can not turn around in one spot: " + this);
+                        default -> throw new IllegalStateException("Can not turn around in one spot");
                     }
                 }
                 case RIGHT -> {
@@ -143,7 +140,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
                         case RIGHT -> {
                             finalPath.addStep('F');
                         }
-                        default -> throw new IllegalStateException("Can not turn around in one spot: " + this);
+                        default -> throw new IllegalStateException("Can not turn around in one spot");
                     }
                 }
             }
@@ -173,6 +170,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
         else if (currentX > prevX && currentY == prevY) {
             return Direction.RIGHT;
         }
+
         throw new IllegalStateException("New position must be different from existing position: " + this);
     }
 

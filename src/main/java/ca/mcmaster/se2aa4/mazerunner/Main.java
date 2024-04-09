@@ -22,7 +22,10 @@ public class Main {
         try {
             cmd = parser.parse(getParserOptions(), args);
             String filePath = cmd.getOptionValue('i');
+
+            long mazeLoadTime = System.currentTimeMillis();
             Maze maze = new Maze(filePath);
+            mazeLoadTime = System.currentTimeMillis() - mazeLoadTime;
 
             solverVisitor = new SolverVisitor(maze);
 
@@ -37,21 +40,26 @@ public class Main {
             }
 
             else if (cmd.getOptionValue("method") != null) {
-
-                String method = cmd.getOptionValue("method", "righthand");
-                Path path = solveMaze(method, maze);
+                String selectedMethod = cmd.getOptionValue("method", "righthand");
 
                 if (cmd.getOptionValue("baseline") != null) {
                     String baselineMethod = cmd.getOptionValue("baseline");
-                    Path baselinePath = solveMaze(baselineMethod, maze);
+                    Benchmarker benchmark = new Benchmarker();
 
-                    float speedup = calculateSpeedup(baselinePath, path);
-                    System.out.printf("Time to load maze from file: %.2f milliseconds\n", maze.getLoadTime());
-                    System.out.printf("Speedup: %.2f \n", speedup);
+                    benchmark.updateselectedTime();
+                    Path selectedPath = solveMaze(selectedMethod, maze);
+                    benchmark.updateselectedTime();
+
+                    benchmark.updateBaselineTime();
+                    Path baselinePath = solveMaze(baselineMethod, maze);
+                    benchmark.updateBaselineTime();
+
+                    benchmark.getResults(baselinePath, selectedPath, mazeLoadTime);
                 }
 
                 else {
-                    System.out.println(path.getFactorizedForm());
+                    Path selectedPath = solveMaze(selectedMethod, maze);
+                    System.out.println(selectedPath.getFactorizedForm());
                 }
             }
 
@@ -60,16 +68,7 @@ public class Main {
             logger.error("MazeSolver failed.  Reason: " + e.getMessage());
             logger.error("PATH NOT COMPUTED");
         }
-
         logger.info("End of MazeRunner");
-    }
-
-    private static float calculateSpeedup(Path baseline, Path method) {
-        String baseLineString = baseline.getCanonicalForm();
-        String methodString = method.getCanonicalForm();
-
-        float speedup = (float) baseLineString.length() / methodString.length();
-        return speedup;
     }
 
     /**
