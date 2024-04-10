@@ -19,7 +19,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
     private static final Logger logger = LogManager.getLogger();
     private Maze maze;
     private AdjacencyList graph;
-    private Position currentPosition;
+    private Position currentNode;
     private Queue<Position> queue = new LinkedList<>();
     private List<Position> marked = new ArrayList<>();
 
@@ -37,27 +37,32 @@ public class BreadthFirstSearchSolver implements MazeSolver {
         return traverseMaze();
     }
 
+    /**
+     * Traverses the maze using Breadth First Search using a dynamic adjacency list.
+     *
+     * @return The shortest path to the exit of the maze
+     */
     private Path traverseMaze() {
         int endOfMaze = maze.getSizeX() - 1;
         Path path = new Path();
 
-        currentPosition = maze.getStart();
-        queue.add(currentPosition);
+        currentNode = maze.getStart();
+        queue.add(currentNode);
 
         ArrayList<Position> start = new ArrayList<>();
-        start.add(currentPosition);
-        marked.add(currentPosition);
+        start.add(currentNode);
+        marked.add(currentNode);
 
         graph.updateNodePath(start);
 
         while (!queue.isEmpty()) {
             ArrayList<Position> currentPath = graph.getLastNodePath();
-            currentPosition = queue.remove();
+            currentNode = queue.remove();
 
-            // Update adjacency list and queue
-            graph.updateNodes(currentPosition, marked, currentPath);
+            // Update adjacency list and queue on every iteration
+            graph.updateNodes(currentNode, marked, currentPath);
 
-            List<Position> adjacentNodes = graph.getAdjacentNodes(currentPosition);
+            List<Position> adjacentNodes = graph.getAdjacentNodes(currentNode);
 
             if (adjacentNodes != null) {
                 for (int i = 0; i < adjacentNodes.size(); i++) {
@@ -66,7 +71,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
             }
 
             // Check if end is reached
-            if (currentPosition.getX() == endOfMaze) {
+            if (currentNode.getX() == endOfMaze) {
                 path = getPath(currentPath);
                 return path;
             }
