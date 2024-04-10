@@ -2,6 +2,8 @@ package ca.mcmaster.se2aa4.mazerunner.solver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -22,26 +24,30 @@ public class BreadthFirstSearchSolver implements MazeSolver {
     private Maze maze;
     private Position currentPosition;
     private Queue<Position> queue = new LinkedList<>();
-    private Queue<ArrayList<Position>> checkedPaths = new LinkedList<>();
-    private List<List<Boolean>> marked;
-    // private List<Position> marked = new ArrayList<>();
-
+    private List<Position> marked = new ArrayList<>();
     private List<Direction> directionCheck = Arrays.asList(Direction.UP, Direction.DOWN, Direction.LEFT,
             Direction.RIGHT);
+
+    /**
+     * Holds all of visited paths so far (required for getting the correct path once
+     * BFS terminates)
+     */
+    private Queue<ArrayList<Position>> checkedPaths = new LinkedList<>();
 
     @Override
     public Path solve(Maze maze) {
         Path path = new Path();
+
         this.maze = maze;
-        
+        int endOfMaze = maze.getSizeX() - 1;
+
         currentPosition = maze.getStart();
         queue.add(currentPosition);
 
         ArrayList<Position> start = new ArrayList<>();
         start.add(currentPosition);
         checkedPaths.add(start);
-
-        initializeMarked();
+        marked.add(currentPosition);
 
         while (!queue.isEmpty()) {
             ArrayList<Position> currentPath = checkedPaths.remove();
@@ -54,7 +60,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
             }
 
             // Check if end is reached
-            if (currentPosition.getX() == maze.getSizeX() - 1) {
+            if (currentPosition.getX() == endOfMaze) {
                 path = getPath(currentPath);
                 return path;
             }
@@ -69,6 +75,8 @@ public class BreadthFirstSearchSolver implements MazeSolver {
      * @param currentPath   Position of the previously checked node
      * @return void
      */
+
+    // -----------------------MOVE TO GRAPH CLASS!-------------------------
     private void updatePaths(Position checkPosition, ArrayList<Position> currentPath) {
         int limitX = maze.getSizeX();
         int limitY = maze.getSizeY();
@@ -84,30 +92,25 @@ public class BreadthFirstSearchSolver implements MazeSolver {
              * Each adjacency list entry is only computed if needed, improving efficency.
              */
 
-            if (!maze.isWall(checkPosition) && !marked.get(checkX).get(checkY)) {
+            if (!maze.isWall(checkPosition) && !marked.contains(checkPosition)) {
                 queue.add(checkPosition);
-                marked.get(checkX).set(checkY, true);
+                marked.add(checkPosition);
 
                 // Update path queue
                 ArrayList<Position> newPosition = new ArrayList<>(currentPath);
                 newPosition.add(checkPosition);
                 checkedPaths.add(newPosition);
             }
-        }
-    }
 
-    /**
-     * Creates a matrix that tracks the nodes that have been visited.
-     */
-    private void initializeMarked() {
-        marked = new LinkedList<List<Boolean>>();
-        for (int i = 0; i < maze.getSizeX(); i++) {
-            List<Boolean> row = new ArrayList<Boolean>();
+            // if (!maze.isWall(checkPosition) && !marked.get(checkX).get(checkY)) {
+            // queue.add(checkPosition);
+            // marked.get(checkX).set(checkY, true);
 
-            for (int j = 0; j < maze.getSizeY(); j++) {
-                row.add(false);
-            }
-            marked.add(row);
+            // // Update path queue
+            // ArrayList<Position> newPosition = new ArrayList<>(currentPath);
+            // newPosition.add(checkPosition);
+            // checkedPaths.add(newPosition);
+            // }
         }
     }
 
