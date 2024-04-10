@@ -55,8 +55,8 @@ public class Benchmarker {
      * @return Speedup of the new selected method compared to the baseline
      */
     private double calculateSpeedup(Path baselinePath, Path selectedPath) {
-        String baseLineString = baselinePath.getCanonicalForm();
-        String methodString = selectedPath.getCanonicalForm();
+        String baseLineString = baselinePath.getCanonicalForm().replaceAll("\\s+", "");
+        String methodString = selectedPath.getCanonicalForm().replaceAll("\\s+", "");
 
         double speedup = (double) baseLineString.length() / methodString.length();
         return speedup;

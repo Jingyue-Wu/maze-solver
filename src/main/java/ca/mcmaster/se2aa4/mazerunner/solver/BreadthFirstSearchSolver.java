@@ -1,10 +1,16 @@
-package ca.mcmaster.se2aa4.mazerunner;
+package ca.mcmaster.se2aa4.mazerunner.solver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
+import ca.mcmaster.se2aa4.mazerunner.Direction;
+import ca.mcmaster.se2aa4.mazerunner.Maze;
+import ca.mcmaster.se2aa4.mazerunner.Path;
+import ca.mcmaster.se2aa4.mazerunner.Position;
+import ca.mcmaster.se2aa4.visitor.Visitor;
 
 public class BreadthFirstSearchSolver implements MazeSolver {
 
@@ -15,9 +21,11 @@ public class BreadthFirstSearchSolver implements MazeSolver {
 
     private Maze maze;
     private Position currentPosition;
-    Queue<Position> queue = new LinkedList<>();
-    Queue<ArrayList<Position>> checkedPaths = new LinkedList<>();
+    private Queue<Position> queue = new LinkedList<>();
+    private Queue<ArrayList<Position>> checkedPaths = new LinkedList<>();
     private List<List<Boolean>> marked;
+    // private List<Position> marked = new ArrayList<>();
+
     private List<Direction> directionCheck = Arrays.asList(Direction.UP, Direction.DOWN, Direction.LEFT,
             Direction.RIGHT);
 
@@ -47,7 +55,7 @@ public class BreadthFirstSearchSolver implements MazeSolver {
 
             // Check if end is reached
             if (currentPosition.getX() == maze.getSizeX() - 1) {
-                path = getPath(currentPath); // Generate path
+                path = getPath(currentPath);
                 return path;
             }
         }

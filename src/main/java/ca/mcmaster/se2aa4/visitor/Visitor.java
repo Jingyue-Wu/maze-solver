@@ -1,4 +1,9 @@
-package ca.mcmaster.se2aa4.mazerunner;
+package ca.mcmaster.se2aa4.visitor;
+
+import ca.mcmaster.se2aa4.mazerunner.Path;
+import ca.mcmaster.se2aa4.mazerunner.solver.BreadthFirstSearchSolver;
+import ca.mcmaster.se2aa4.mazerunner.solver.RightHandSolver;
+import ca.mcmaster.se2aa4.mazerunner.solver.TremauxSolver;
 
 public interface Visitor {
 

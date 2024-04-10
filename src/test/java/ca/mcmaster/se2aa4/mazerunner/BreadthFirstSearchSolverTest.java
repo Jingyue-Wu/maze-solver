@@ -1,6 +1,12 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import org.junit.jupiter.api.Test;
+
+import ca.mcmaster.se2aa4.mazerunner.solver.BreadthFirstSearchSolver;
+import ca.mcmaster.se2aa4.mazerunner.solver.MazeSolver;
+import ca.mcmaster.se2aa4.visitor.SolverVisitor;
+import ca.mcmaster.se2aa4.visitor.Visitor;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;

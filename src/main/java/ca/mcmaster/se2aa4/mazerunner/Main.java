@@ -8,6 +8,13 @@ import org.apache.commons.cli.Options;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ca.mcmaster.se2aa4.mazerunner.solver.BreadthFirstSearchSolver;
+import ca.mcmaster.se2aa4.mazerunner.solver.MazeSolver;
+import ca.mcmaster.se2aa4.mazerunner.solver.RightHandSolver;
+import ca.mcmaster.se2aa4.mazerunner.solver.TremauxSolver;
+import ca.mcmaster.se2aa4.visitor.SolverVisitor;
+import ca.mcmaster.se2aa4.visitor.Visitor;
+
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
