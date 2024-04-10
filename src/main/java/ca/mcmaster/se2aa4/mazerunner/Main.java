@@ -70,6 +70,10 @@ public class Main {
                 }
             }
 
+            else {
+                System.out.println(" Please specify a method, and optionally a baseline method");
+            }
+
         } catch (Exception e) {
             System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
             logger.error("MazeSolver failed.  Reason: " + e.getMessage());

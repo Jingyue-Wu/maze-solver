@@ -76,16 +76,25 @@ PATH NOT COMPUTED
 
 #### Command line arguments
 
-The delivered program at the end of this assignment should use the following flags:
+The delivered program uses the following flags:
 
 - `-i MAZE_FILE`: specifies the filename to be used;
-- `-p PATH_SEQUENCE`: activates the path verification mode to validate that PATH_SEQUENCE is correct for the maze
-
-If you are also delivering the bonus, your program will react to a third flag:
-
-- `-method {tremaux, righthand}`: specifies which path computation method to use. (default is right hand)
+- `-p "PATH_SEQUENCE"`: activates the path verification mode to validate that PATH_SEQUENCE is correct for the maze. (quotes,`" "`, are required for paths containing spaces)
+- `-method {tremaux, righthand, bfs}`: specifies which path computation method to use. (default is right hand)
+- `-baseline {tremaux, righthand, bfs}`: activates benchmark mode when used with `-method` and specifies the baseline method to compare with the selected method.
 
 #### Examples
+
+When benchmark mode is activated, the program will only print the time to load maze from file, the explore time for both methods and the speedup. All times are in milliseconds.
+
+```
+~/2aa4/a3-maze-runner-take-two-Jingyue-Wu$ java -jar target/mazerunner.jar -i ./examples/rectangle.maz.txt  -method bfs -baseline tremaux
+Time to load maze from file: 2 milliseconds 
+Explore time for selected method: 44 milliseconds 
+Explore time for Baseline: 8 milliseconds 
+Speedup: 1.00 times faster
+
+```
 
 When no logs are activated, the programs only print the computed path on the standard output.
 
