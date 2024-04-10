@@ -14,15 +14,14 @@ import java.util.Comparator;
 import java.util.List;
 
 public class TremauxSolver implements MazeSolver {
+    private static final Logger logger = LogManager.getLogger();
+    private int[][] marks;
+    private Maze maze;
 
     @Override
     public Path accept(Visitor visitor) {
         return visitor.visit(this);
     }
-
-    private static final Logger logger = LogManager.getLogger();
-    private int[][] marks;
-    private Maze maze;
 
     @Override
     public Path solve(Maze maze) {
