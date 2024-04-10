@@ -1,106 +1,77 @@
-package ca.mcmaster.se2aa4.mazerunner;
+package ca.mcmaster.se2aa4.mazerunner.solver;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import ca.mcmaster.se2aa4.mazerunner.Direction;
+import ca.mcmaster.se2aa4.mazerunner.Maze;
+import ca.mcmaster.se2aa4.mazerunner.Path;
+import ca.mcmaster.se2aa4.mazerunner.Position;
+import ca.mcmaster.se2aa4.mazerunner.graph.AdjacencyList;
+import ca.mcmaster.se2aa4.visitor.Visitor;
+
 public class BreadthFirstSearchSolver implements MazeSolver {
+    private static final Logger logger = LogManager.getLogger();
+    private Maze maze;
+    private AdjacencyList graph;
+    private Position currentPosition;
+    private Queue<Position> queue = new LinkedList<>();
+    private List<Position> marked = new ArrayList<>();
 
     @Override
     public Path accept(Visitor visitor) {
         return visitor.visit(this);
     }
 
-    private Maze maze;
-    private Position currentPosition;
-    Queue<Position> queue = new LinkedList<>();
-    Queue<ArrayList<Position>> checkedPaths = new LinkedList<>();
-    private List<List<Boolean>> marked;
-    private List<Direction> directionCheck = Arrays.asList(Direction.UP, Direction.DOWN, Direction.LEFT,
-            Direction.RIGHT);
-
     @Override
     public Path solve(Maze maze) {
-        Path path = new Path();
         this.maze = maze;
-        
+        logger.debug("Initalizing graph...");
+        graph = new AdjacencyList(maze);
+        logger.debug("Traversing maze...");
+        return traverseMaze();
+    }
+
+    private Path traverseMaze() {
+        int endOfMaze = maze.getSizeX() - 1;
+        Path path = new Path();
+
         currentPosition = maze.getStart();
         queue.add(currentPosition);
 
         ArrayList<Position> start = new ArrayList<>();
         start.add(currentPosition);
-        checkedPaths.add(start);
+        marked.add(currentPosition);
 
-        initializeMarked();
+        graph.updateNodePath(start);
 
         while (!queue.isEmpty()) {
-            ArrayList<Position> currentPath = checkedPaths.remove();
+            ArrayList<Position> currentPath = graph.getLastNodePath();
             currentPosition = queue.remove();
 
-            for (int i = 0; i < directionCheck.size(); i++) {
-                Position checkPosition = currentPosition.move(directionCheck.get(i));
+            // Update adjacency list and queue
+            graph.updateNodes(currentPosition, marked, currentPath);
 
-                updatePaths(checkPosition, currentPath);
+            List<Position> adjacentNodes = graph.getAdjacentNodes(currentPosition);
+
+            if (adjacentNodes != null) {
+                for (int i = 0; i < adjacentNodes.size(); i++) {
+                    queue.add(adjacentNodes.get(i));
+                }
             }
 
             // Check if end is reached
-            if (currentPosition.getX() == maze.getSizeX() - 1) {
-                path = getPath(currentPath); // Generate path
+            if (currentPosition.getX() == endOfMaze) {
+                path = getPath(currentPath);
                 return path;
             }
         }
         return path;
-    }
-
-    /**
-     * Updates the priority queue and queue of possible paths.
-     *
-     * @param checkPosition Position of current node in the graph
-     * @param currentPath   Position of the previously checked node
-     * @return void
-     */
-    private void updatePaths(Position checkPosition, ArrayList<Position> currentPath) {
-        int limitX = maze.getSizeX();
-        int limitY = maze.getSizeY();
-        int checkX = checkPosition.getX();
-        int checkY = checkPosition.getY();
-
-        if (checkX < limitX && checkY < limitY && checkX > 0 && checkY > 0) {
-
-            /**
-             * Checks 4 adjecent nodes.
-             * If it's not a wall and has not been visited yet, then add the node
-             * to priority queue creating an implicit adjacency list graph representation.
-             * Each adjacency list entry is only computed if needed, improving efficency.
-             */
-
-            if (!maze.isWall(checkPosition) && !marked.get(checkX).get(checkY)) {
-                queue.add(checkPosition);
-                marked.get(checkX).set(checkY, true);
-
-                // Update path queue
-                ArrayList<Position> newPosition = new ArrayList<>(currentPath);
-                newPosition.add(checkPosition);
-                checkedPaths.add(newPosition);
-            }
-        }
-    }
-
-    /**
-     * Creates a matrix that tracks the nodes that have been visited.
-     */
-    private void initializeMarked() {
-        marked = new LinkedList<List<Boolean>>();
-        for (int i = 0; i < maze.getSizeX(); i++) {
-            List<Boolean> row = new ArrayList<Boolean>();
-
-            for (int j = 0; j < maze.getSizeY(); j++) {
-                row.add(false);
-            }
-            marked.add(row);
-        }
     }
 
     /**
@@ -197,14 +168,14 @@ public class BreadthFirstSearchSolver implements MazeSolver {
     }
 
     /**
-     * Gets the new travel direction based on the change in nodes.
+     * Gets the new travel direction based on the change in nodes
+     * (Relative to x, y coordinates).
      *
      * @param current  Position of current node in the graph
      * @param previous Position of the previously checked node
      * @return New Direction
      */
     private Direction getNewDirection(Position current, Position previous) {
-        // Find absolute direction (Relative to x, y coordinates)
         int currentX = current.getX();
         int currentY = current.getY();
         int prevX = previous.getX();
@@ -225,7 +196,6 @@ public class BreadthFirstSearchSolver implements MazeSolver {
         else if (currentX > prevX && currentY == prevY) {
             return Direction.RIGHT;
         }
-
         throw new IllegalStateException("New position must be different from existing position: " + this);
     }
 }

@@ -1,22 +1,27 @@
-package ca.mcmaster.se2aa4.mazerunner;
+package ca.mcmaster.se2aa4.mazerunner.solver;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import ca.mcmaster.se2aa4.mazerunner.Direction;
+import ca.mcmaster.se2aa4.mazerunner.Maze;
+import ca.mcmaster.se2aa4.mazerunner.Path;
+import ca.mcmaster.se2aa4.mazerunner.Position;
+import ca.mcmaster.se2aa4.visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class TremauxSolver implements MazeSolver {
+    private static final Logger logger = LogManager.getLogger();
+    private int[][] marks;
+    private Maze maze;
 
     @Override
     public Path accept(Visitor visitor) {
         return visitor.visit(this);
     }
-
-    private static final Logger logger = LogManager.getLogger();
-    private int[][] marks;
-    private Maze maze;
 
     @Override
     public Path solve(Maze maze) {
