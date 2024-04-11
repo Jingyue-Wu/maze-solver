@@ -6,6 +6,21 @@
 * **Course Title**: Software Design I - Introduction to Software Development
 * Term: *Level II - Winter 2024*
 
+## Citations
+
+[1]	J. Hellings, SFWRENG 2C03 Class Lecture, Topic: "(9) Graphs: Elementary Graph Algorithms”, McMaster University, 2024. 
+
+[2]	A. Lachance, SFWRENG 2AA4 A1 Sample Solution, Topic: "Assignment A1 - Maze Runner”, McMaster University, 2024. 
+
+[3]	R. Li, SFWRENG 2AA4 Tutorial #12, Topic: "Double Dispatch in practice”, McMaster University, 2024. 
+
+[4]	“Visitor Design Pattern in Java | DigitalOcean,” https://www.digitalocean.com/community/tutorials/visitor-design-pattern-java
+
+[5]	“Visitor and Double Dispatch,” refactoring.guru. https://refactoring.guru/design-patterns/visitor-double-dispatch
+
+The final product was built upon Alexandre Lachance’s A1 Sample Solution. The Breadth First Search algorithm was based off of the pseudocode from Dr. Helling’s lecture slides. The visitor design pattern used was based off of the UML diagrams in Richard Li’s tutorial session and concepts in DigitalOcean and Refactoring Guru tutorials.
+
+
 ## Business Logic Specification
 
 This program explores a maze, finding a path from an entry point to an exit one.
