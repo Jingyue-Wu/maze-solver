@@ -1,33 +1,10 @@
-# Assignment A1 - Maze Runner
-
-* **Student**: [JINGYUE WU](wu588@mcmaster.ca)
-* **Program**: B. Eng. In Software Engineering
-* **Course code**: SFWRENG 2AA4
-* **Course Title**: Software Design I - Introduction to Software Development
-* Term: *Level II - Winter 2024*
-
-## Citations
-
-[1]	J. Hellings, SFWRENG 2C03 Class Lecture, Topic: "(9) Graphs: Elementary Graph Algorithms”, McMaster University, 2024. 
-
-[2]	A. Lachance, SFWRENG 2AA4 A1 Sample Solution, Topic: "Assignment A1 - Maze Runner”, McMaster University, 2024. 
-
-[3]	R. Li, SFWRENG 2AA4 Tutorial #12, Topic: "Double Dispatch in practice”, McMaster University, 2024. 
-
-[4]	“Visitor Design Pattern in Java | DigitalOcean,” https://www.digitalocean.com/community/tutorials/visitor-design-pattern-java
-
-[5]	“Visitor and Double Dispatch,” refactoring.guru. https://refactoring.guru/design-patterns/visitor-double-dispatch
-
-The final product was built upon Alexandre Lachance’s A1 Sample Solution. The Breadth First Search algorithm was based off of the pseudocode from Dr. Helling’s lecture slides. The visitor design pattern used was based off of the UML diagrams in Richard Li’s tutorial session and concepts in DigitalOcean and Refactoring Guru tutorials.
-
+# Maze Solver
 
 ## Business Logic Specification
 
 This program explores a maze, finding a path from an entry point to an exit one.
 
 - The maze is stored in a text file, with `#` representing walls and `␣` (_empty space_) representing passages.
-- You’ll find examples of such mazes in the [`examples`](./examples) directory.
-    - You can also use the [Maze Generator](https://github.com/ace-lectures/maze-gen) to generate others.
 - The Maze is surrounded by walls on its four borders, except for its entry/exit points.
     - Entry and exit points are always located on the East and West border.
     - The maze is not directed. As such, exit and entry can be interchanged.
@@ -39,21 +16,16 @@ This program explores a maze, finding a path from an entry point to an exit one.
 - A canonical path contains only `F`, `R` and `L` symbols
 - A factorized path squashes together similar instructions (i.e., `FFF` = `3F`, `LL` = `2L`).
 - Spaces are ignored in the instruction sequence (only for readability: `FFLFF` = `FF L FF`)
-- The program takes as input a maze and print the path on the standard output.
-    - For this assignment, the path does not have to be the shortest one.
-- The program can take a path as input and verify if it's a legit one.
 
 ## How to run this software?
 
-To build the program, simply package it with Maven:
+Package with Maven:
 
 ```
 mosser@azrael A1-Template % mvn -q clean package 
 ```
 
-### Provided version (starter code)
-
-The starter code assumes the maze file name is the first argument.
+Assumes the maze file name is the first argument.
 
 ```
 mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz.txt
@@ -75,7 +47,7 @@ PATH NOT COMPUTED
 ** End of MazeRunner
 ```
 
-When called on a non-existing file. it prints an error message
+When called on a non-existing file, it prints an error message
 
 ```
 mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz.txtd
@@ -86,8 +58,6 @@ mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz
 PATH NOT COMPUTED
 ** End of MazeRunner
 ```
-
-### Delivered version
 
 #### Command line arguments
 
@@ -129,9 +99,28 @@ mosser@azrael A1-Template %
 
 If a given path is incorrect, the program prints the message `incorrect path` on the standard output.
 
+
+
+
+
 ```
 mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
 inccorrect path
 mosser@azrael A1-Template %
 ```
+
+
+
+## Citations
+
+[1]	J. Hellings, SFWRENG 2C03 Class Lecture, Topic: "(9) Graphs: Elementary Graph Algorithms”, McMaster University, 2024. 
+
+[2]	A. Lachance, SFWRENG 2AA4 A1 Sample Solution, Topic: "Assignment A1 - Maze Runner”, McMaster University, 2024. 
+
+[3]	R. Li, SFWRENG 2AA4 Tutorial #12, Topic: "Double Dispatch in practice”, McMaster University, 2024. 
+
+[4]	“Visitor Design Pattern in Java | DigitalOcean,” https://www.digitalocean.com/community/tutorials/visitor-design-pattern-java
+
+[5]	“Visitor and Double Dispatch,” refactoring.guru. https://refactoring.guru/design-patterns/visitor-double-dispatch
+
 
